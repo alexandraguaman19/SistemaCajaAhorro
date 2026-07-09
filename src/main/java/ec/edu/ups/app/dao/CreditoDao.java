@@ -50,7 +50,6 @@ public class CreditoDao implements Serializable {
     // Solicitar crédito
     public void solicitarCredito(Credito credito) {
         credito.setEstado("Pendiente");
-        credito.setEstado("Pendiente");
         em.persist(credito);
     }
 

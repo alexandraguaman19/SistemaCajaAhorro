@@ -11,7 +11,7 @@ public class Credito {
 	private int id;
 	private double valor;
 	private int plazo;
-	private boolean estado;
+	private String estado;
 	@OneToOne
 	private Socio socio;
 	
@@ -37,8 +37,8 @@ public class Credito {
 	public boolean isEstado() {
 		return estado;
 	}
-	public void setEstado(boolean estado) {
-		this.estado = estado;
+	public void setEstado(String string) {
+		this.estado = string;
 	}
 	public Socio getSocio() {
 		return socio;
