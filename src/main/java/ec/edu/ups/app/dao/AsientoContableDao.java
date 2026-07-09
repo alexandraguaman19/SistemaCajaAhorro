@@ -116,11 +116,10 @@ public class AsientoContableDao implements Serializable {
 
         } catch (NoResultException e) {
 
-            return null;
+            return null; 
 
         }
 
     }
 }
-
 
