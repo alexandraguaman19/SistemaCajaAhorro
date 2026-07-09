@@ -2,18 +2,11 @@ package ec.edu.ups.app.dao;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 
-@Stateless
-public class AsientoContableDao {
-	
-	private EntityManager em;
-	
-	
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 

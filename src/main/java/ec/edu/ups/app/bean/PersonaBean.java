@@ -122,9 +122,6 @@ public class PersonaBean implements Serializable {
 
     }
 
-    /**
-     * Busca una persona por código.
-     */
     public void buscar(int codigo) {
 
         try {
@@ -141,10 +138,8 @@ public class PersonaBean implements Serializable {
         }
 
     }
-
-    /**
-     * Busca una persona por cédula.
-     */
+    
+    
     public void buscarCedula() {
 
         try {
@@ -174,11 +169,6 @@ public class PersonaBean implements Serializable {
         }
 
     }
-
-    // ==========================
-    // Getters y Setters
-    // ==========================
-
     public Persona getPersona() {
         return persona;
     }

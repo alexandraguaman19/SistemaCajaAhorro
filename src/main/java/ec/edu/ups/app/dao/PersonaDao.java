@@ -30,7 +30,7 @@ public class PersonaDao implements Serializable {
         if (p != null) {
             em.remove(p);
         }
-        
+    }
     public void eliminar(String cedula) {
         Persona p = em.find(Persona.class, cedula);
         try {
