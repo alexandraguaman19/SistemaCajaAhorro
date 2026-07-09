@@ -36,6 +36,21 @@ public class Cuota {
 	public void setMonto(double monto) {
 		this.monto = monto;
 	}
+	public Date getFechaVencimiento() {
+		return fechaVencimiento;
+	}
+
+	public void setFechaVencimiento(Date fechaVencimiento) {
+		this.fechaVencimiento = fechaVencimiento;
+	}
+
+	public Date getFechaPago() {
+		return fechaPago;
+	}
+
+	public void setFechaPago(Date fechaPago) {
+		this.fechaPago = fechaPago;
+	}
 
 	public String getEstado() {
 		return estado;
