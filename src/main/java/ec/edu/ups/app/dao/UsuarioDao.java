@@ -1,31 +1,82 @@
 package ec.edu.ups.app.dao;
 
-import java.util.List;
-
+import ec.edu.ups.app.modelo.Usuario;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 
-import ec.edu.ups.app.modelo.Usuario;
-
+import java.util.List;
 
 @Stateless
 public class UsuarioDao {
-	
-	private EntityManager em;
 
-	public Usuario buscarUsuario(String usuario) {
+    @PersistenceContext
+    private EntityManager em;
 
-	    String jpql = "SELECT u FROM Usuario u WHERE u.usuario=:usuario";
+    public void insert(Usuario usuario) {
+        em.persist(usuario);
+    }
 
-	    List<Usuario> lista = em.createQuery(jpql, Usuario.class)
-	            .setParameter("usuario", usuario)
-	            .getResultList();
+    public void update(Usuario usuario) {
+        em.merge(usuario);
+    }
 
-	    if (lista.isEmpty())
-	        return null;
+    public void delete(int codigo) {
 
-	    return lista.get(0);
+        Usuario u = read(codigo);
 
-	}
-	
+        if (u != null)
+            em.remove(u);
+
+    }
+
+    public Usuario read(int codigo) {
+        return em.find(Usuario.class, codigo);
+    }
+
+    public List<Usuario> getAll() {
+
+        return em.createQuery("SELECT u FROM Usuario u", Usuario.class)
+                .getResultList();
+
+    }
+
+    public Usuario buscarUsername(String username) {
+
+        try {
+
+            return em.createQuery(
+                    "SELECT u FROM Usuario u WHERE u.username=:u",
+                    Usuario.class)
+                    .setParameter("u", username)
+                    .getSingleResult();
+
+        } catch (NoResultException e) {
+
+            return null;
+
+        }
+
+    }
+
+    public Usuario login(String username, String password) {
+
+        try {
+
+            return em.createQuery(
+                    "SELECT u FROM Usuario u WHERE u.username=:u AND u.password=:p AND u.estado=true",
+                    Usuario.class)
+                    .setParameter("u", username)
+                    .setParameter("p", password)
+                    .getSingleResult();
+
+        } catch (NoResultException e) {
+
+            return null;
+
+        }
+
+    }
+
 }
