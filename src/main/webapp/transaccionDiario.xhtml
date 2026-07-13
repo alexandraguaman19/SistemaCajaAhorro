@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+    <title>Libro Diario</title>
+
+    <h:outputStylesheet library="css" name="estilo.css"/>
+
+</h:head>
+
+<h:body>
+
+<h:form id="frmTransaccionDiario">
+
+    <p:growl id="mensaje" showDetail="true"/>
+
+    <p:panel header="Registro de Transacciones del Libro Diario">
+
+        <p:panelGrid columns="2">
+
+            <h:outputLabel value="Código"/>
+
+            <p:inputText value="#{transaccionDiarioBean.transaccionDiario.id}"
+                         readonly="true"/>
+
+            <h:outputLabel value="Transacción"/>
+
+            <p:selectOneMenu value="#{transaccionDiarioBean.transaccionSeleccionada}"
+                             required="true">
+
+                <f:selectItem itemLabel="Seleccione una Transacción"
+                              itemValue="#{null}"/>
+
+                <f:selectItems value="#{transaccionBean.listaTransacciones}"
+                               var="t"
+                               itemValue="#{t}"
+                               itemLabel="Transacción #{t.id} - #{t.tipoTransaccion.nombre}"/>
+
+            </p:selectOneMenu>
+
+            <h:outputLabel value="Asiento Contable"/>
+
+            <p:selectOneMenu value="#{transaccionDiarioBean.asientoSeleccionado}"
+                             required="true">
+
+                <f:selectItem itemLabel="Seleccione un Asiento"
+                              itemValue="#{null}"/>
+
+                <f:selectItems value="#{asientoContableBean.listaAsientos}"
+                               var="a"
+                               itemValue="#{a}"
+                               itemLabel="#{a.cuentaContable}"/>
+
+            </p:selectOneMenu>
+
+            <h:outputLabel value="Debe"/>
+
+            <p:inputNumber value="#{transaccionDiarioBean.transaccionDiario.debe}"
+                           decimalPlaces="2"
+                           symbol="$ "
+                           symbolPosition="p"/>
+
+            <h:outputLabel value="Haber"/>
+
+            <p:inputNumber value="#{transaccionDiarioBean.transaccionDiario.haber}"
+                           decimalPlaces="2"
+                           symbol="$ "
+                           symbolPosition="p"/>
+
+            <h:outputLabel value="Detalle"/>
+
+            <p:inputTextarea value="#{transaccionDiarioBean.transaccionDiario.detalle}"
+                             rows="3"
+                             cols="40"/>
+
+        </p:panelGrid>
+
+        <br/>
+
+        <p:commandButton value="Guardar"
+                         icon="pi pi-save"
+                         action="#{transaccionDiarioBean.guardar}"
+                         update="frmTransaccionDiario"/>
+
+        <p:commandButton value="Nuevo"
+                         icon="pi pi-plus"
+                         action="#{transaccionDiarioBean.nuevo}"
+                         process="@this"
+                         update="frmTransaccionDiario"/>
+
+    </p:panel>
+
+    <br/>
+
+    <p:panel header="Libro Diario">
+
+        <p:dataTable value="#{transaccionDiarioBean.listaTransaccionesDiario}"
+                     var="td"
+                     paginator="true"
+                     rows="10"
+                     responsiveLayout="scroll">
+
+            <p:column headerText="Código">
+                #{td.id}
+            </p:column>
+
+            <p:column headerText="Fecha">
+                <h:outputText value="#{td.transaccion.fecha}">
+                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+                </h:outputText>
+            </p:column>
+
+            <p:column headerText="Tipo">
+                #{td.transaccion.tipoTransaccion.nombre}
+            </p:column>
+
+            <p:column headerText="Cuenta">
+                #{td.asientoContable.cuentaContable}
+            </p:column>
+
+            <p:column headerText="Debe">
+                <h:outputText value="#{td.debe}">
+                    <f:convertNumber type="currency"
+                                     currencySymbol="$"/>
+                </h:outputText>
+            </p:column>
+
+            <p:column headerText="Haber">
+                <h:outputText value="#{td.haber}">
+                    <f:convertNumber type="currency"
+                                     currencySymbol="$"/>
+                </h:outputText>
+            </p:column>
+
+            <p:column headerText="Detalle">
+                #{td.detalle}
+            </p:column>
+
+            <p:column headerText="Acciones">
+
+                <p:commandButton icon="pi pi-pencil"
+                                 action="#{transaccionDiarioBean.editar(td)}"
+                                 update="frmTransaccionDiario"/>
+
+                <p:commandButton icon="pi pi-trash"
+                                 action="#{transaccionDiarioBean.eliminar(td)}"
+                                 update="frmTransaccionDiario">
+
+                    <p:confirm header="Confirmación"
+                               message="¿Eliminar este registro del libro diario?"
+                               icon="pi pi-exclamation-triangle"/>
+
+                </p:commandButton>
+
+            </p:column>
+
+        </p:dataTable>
+
+    </p:panel>
+
+    <p:confirmDialog global="true">
+
+        <p:commandButton value="Sí"
+                         type="button"
+                         styleClass="ui-confirmdialog-yes"/>
+
+        <p:commandButton value="No"
+                         type="button"
+                         styleClass="ui-confirmdialog-no ui-button-secondary"/>
+
+    </p:confirmDialog>
+
+</h:form>
+
+</h:body>
+
+</html>
