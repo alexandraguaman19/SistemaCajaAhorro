@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+    <title>Sistema Bancario</title>
+
+    <h:outputStylesheet library="css" name="estilo.css"/>
+    <h:outputStylesheet library="css" name="dashboard.css"/>
+
+</h:head>
+
+<h:body>
+
+    <div class="header">
+
+        <div class="logo">
+            SISTEMA BANCARIO
+        </div>
+
+        <div class="usuario">
+
+            Bienvenido:
+            <strong>#{loginBean.usuario}</strong>
+
+            <p:commandButton
+                    value="Cerrar Sesión"
+                    icon="pi pi-sign-out"
+                    action="#{loginBean.logout}"
+                    styleClass="ui-button-danger"/>
+
+        </div>
+
+    </div>
+
+    <div class="contenedor">
+
+        <div class="menu">
+
+            <p:panelMenu style="width:100%">
+
+                <p:submenu label="Seguridad" icon="pi pi-lock">
+
+                    <p:menuitem value="Personas"
+                                icon="pi pi-users"
+                                outcome="/persona"/>
+
+                    <p:menuitem value="Roles"
+                                icon="pi pi-user-edit"
+                                outcome="/rol"/>
+
+                </p:submenu>
+
+                <p:submenu label="Socios" icon="pi pi-id-card">
+
+                    <p:menuitem value="Socios"
+                                outcome="/socio"/>
+
+                </p:submenu>
+
+                <p:submenu label="Cuentas" icon="pi pi-wallet">
+
+                    <p:menuitem value="Cuentas"
+                                outcome="/cuenta"/>
+
+                </p:submenu>
+
+                <p:submenu label="Créditos" icon="pi pi-credit-card">
+
+                    <p:menuitem value="Créditos"
+                                outcome="/credito"/>
+
+                    <p:menuitem value="Cuotas"
+                                outcome="/cuota"/>
+
+                </p:submenu>
+
+                <p:submenu label="Transacciones" icon="pi pi-money-bill">
+
+                    <p:menuitem value="Tipos"
+                                outcome="/tipoTransaccion"/>
+
+                    <p:menuitem value="Movimientos"
+                                outcome="/transaccion"/>
+
+                </p:submenu>
+
+                <p:submenu label="Contabilidad" icon="pi pi-book">
+
+                    <p:menuitem value="Libro Diario"
+                                outcome="/transaccionDiario"/>
+
+                    <p:menuitem value="Asientos Contables"
+                                outcome="/asientoContable"/>
+
+                </p:submenu>
+
+            </p:panelMenu>
+
+        </div>
+
+        <div class="contenido">
+
+            <ui:insert name="contenido"/>
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+
+        Sistema Bancario Cooperativa © 2026
+
+    </div>
+
+</h:body>
+
+</html>
