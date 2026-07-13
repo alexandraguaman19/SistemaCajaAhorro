@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+    <title>Administración de Cuentas</title>
+
+    <h:outputStylesheet library="css" name="estilo.css"/>
+
+</h:head>
+
+<h:body>
+
+<h:form id="frmCuenta">
+
+    <p:growl id="mensajes" showDetail="true"/>
+
+    <p:panel header="Registro de Cuentas Bancarias">
+
+        <p:panelGrid columns="2" columnClasses="etiqueta,valor">
+
+            <h:outputLabel value="Código"/>
+
+            <p:inputText
+                    value="#{cuentaBean.cuenta.id}"
+                    readonly="true"/>
+
+            <h:outputLabel value="Número de Cuenta"/>
+
+            <p:inputText
+                    value="#{cuentaBean.cuenta.numero}"
+                    required="true"
+                    requiredMessage="Ingrese el número de cuenta"/>
+
+            <h:outputLabel value="Socio"/>
+
+            <p:selectOneMenu
+                    value="#{cuentaBean.socioSeleccionado}"
+                    converter="omnifaces.SelectItemsConverter"
+                    required="true">
+
+                <f:selectItem itemLabel="Seleccione un Socio"
+                              itemValue="#{null}"/>
+
+                <f:selectItems
+                        value="#{socioBean.listaSocios}"
+                        var="s"
+                        itemValue="#{s}"
+                        itemLabel="#{s.persona.cedula} - #{s.persona.nombre} #{s.persona.apellido}"/>
+
+            </p:selectOneMenu>
+
+            <h:outputLabel value="Fecha de Apertura"/>
+
+            <p:datePicker
+                    value="#{cuentaBean.cuenta.fechaApertura}"
+                    pattern="dd/MM/yyyy"
+                    showIcon="true"/>
+
+            <h:outputLabel value="Saldo Inicial"/>
+
+            <p:inputNumber
+                    value="#{cuentaBean.cuenta.saldo}"
+                    decimalPlaces="2"
+                    symbol="$ "
+                    symbolPosition="p"/>
+
+        </p:panelGrid>
+
+        <br/>
+
+        <p:commandButton
+                value="Guardar"
+                icon="pi pi-save"
+                action="#{cuentaBean.guardar}"
+                update="frmCuenta"/>
+
+        <p:commandButton
+                value="Nuevo"
+                icon="pi pi-plus"
+                action="#{cuentaBean.nuevo}"
+                process="@this"
+                update="frmCuenta"/>
+
+    </p:panel>
+
+    <br/>
+
+    <p:panel header="Listado de Cuentas">
+
+        <p:dataTable
+                id="tablaCuentas"
+                value="#{cuentaBean.listaCuentas}"
+                var="c"
+                paginator="true"
+                rows="10"
+                responsiveLayout="scroll"
+                emptyMessage="No existen cuentas registradas">
+
+            <p:column headerText="Código">
+                #{c.id}
+            </p:column>
+
+            <p:column headerText="Número">
+                #{c.numero}
+            </p:column>
+
+            <p:column headerText="Socio">
+                #{c.socio.persona.nombre}
+                #{c.socio.persona.apellido}
+            </p:column>
+
+            <p:column headerText="Cédula">
+                #{c.socio.persona.cedula}
+            </p:column>
+
+            <p:column headerText="Fecha Apertura">
+                <h:outputText value="#{c.fechaApertura}">
+                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                </h:outputText>
+            </p:column>
+
+            <p:column headerText="Saldo">
+
+                <h:outputText value="#{c.saldo}">
+                    <f:convertNumber
+                            type="currency"
+                            currencySymbol="$"/>
+                </h:outputText>
+
+            </p:column>
+
+            <p:column headerText="Acciones">
+
+                <p:commandButton
+                        icon="pi pi-pencil"
+                        title="Editar"
+                        action="#{cuentaBean.editar(c)}"
+                        update="frmCuenta"/>
+
+                <p:spacer width="5"/>
+
+                <p:commandButton
+                        icon="pi pi-trash"
+                        title="Eliminar"
+                        action="#{cuentaBean.eliminar(c)}"
+                        update="frmCuenta">
+
+                    <p:confirm
+                            header="Confirmación"
+                            message="¿Desea eliminar la cuenta?"
+                            icon="pi pi-exclamation-triangle"/>
+
+                </p:commandButton>
+
+            </p:column>
+
+        </p:dataTable>
+
+    </p:panel>
+
+    <p:confirmDialog global="true">
+
+        <p:commandButton
+                value="Sí"
+                type="button"
+                styleClass="ui-confirmdialog-yes"/>
+
+        <p:commandButton
+                value="No"
+                type="button"
+                styleClass="ui-confirmdialog-no ui-button-secondary"/>
+
+    </p:confirmDialog>
+
+</h:form>
+
+</h:body>
+
+</html>

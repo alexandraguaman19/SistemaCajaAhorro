@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Administración de Créditos</title>
+
+    <h:outputStylesheet library="css" name="estilo.css"/>
+
+</h:head>
+
+<h:body>
+
+<h:form id="frmCredito">
+
+    <p:growl id="mensajes" showDetail="true"/>
+
+    <p:panel header="Solicitud de Crédito">
+
+        <p:panelGrid columns="2">
+
+            <h:outputLabel value="Código"/>
+
+            <p:inputText
+                    value="#{creditoBean.credito.id}"
+                    readonly="true"/>
+
+            <h:outputLabel value="Cuenta"/>
+
+            <p:selectOneMenu
+                    value="#{creditoBean.cuentaSeleccionada}"
+                    required="true">
+
+                <f:selectItem
+                        itemLabel="Seleccione una Cuenta"
+                        itemValue="#{null}"/>
+
+                <f:selectItems
+                        value="#{cuentaBean.listaCuentas}"
+                        var="c"
+                        itemValue="#{c}"
+                        itemLabel="#{c.numero} - #{c.socio.persona.nombre} #{c.socio.persona.apellido}"/>
+
+            </p:selectOneMenu>
+
+            <h:outputLabel value="Monto"/>
+
+            <p:inputNumber
+                    value="#{creditoBean.credito.monto}"
+                    decimalPlaces="2"
+                    symbol="$ "
+                    symbolPosition="p"/>
+
+            <h:outputLabel value="Interés (%)"/>
+
+            <p:inputNumber
+                    value="#{creditoBean.credito.interes}"
+                    decimalPlaces="2"/>
+
+            <h:outputLabel value="Plazo (Meses)"/>
+
+            <p:inputNumber
+                    value="#{creditoBean.credito.plazo}"
+                    decimalPlaces="0"/>
+
+            <h:outputLabel value="Fecha"/>
+
+            <p:datePicker
+                    value="#{creditoBean.credito.fecha}"
+                    pattern="dd/MM/yyyy"
+                    showIcon="true"/>
+
+            <h:outputLabel value="Estado"/>
+
+            <p:selectOneMenu
+                    value="#{creditoBean.credito.estado}">
+
+                <f:selectItem itemLabel="Pendiente" itemValue="PENDIENTE"/>
+                <f:selectItem itemLabel="Aprobado" itemValue="APROBADO"/>
+                <f:selectItem itemLabel="Pagado" itemValue="PAGADO"/>
+                <f:selectItem itemLabel="Rechazado" itemValue="RECHAZADO"/>
+
+            </p:selectOneMenu>
+
+        </p:panelGrid>
+
+        <br/>
+
+        <p:commandButton
+                value="Guardar"
+                icon="pi pi-save"
+                action="#{creditoBean.guardar}"
+                update="frmCredito"/>
+
+        <p:commandButton
+                value="Generar Cuotas"
+                icon="pi pi-list"
+                action="#{creditoBean.generarCuotas}"
+                update="frmCredito"/>
+
+        <p:commandButton
+                value="Nuevo"
+                icon="pi pi-plus"
+                action="#{creditoBean.nuevo}"
+                process="@this"
+                update="frmCredito"/>
+
+    </p:panel>
+
+    <br/>
+
+    <p:panel header="Listado de Créditos">
+
+        <p:dataTable
+                value="#{creditoBean.listaCreditos}"
+                var="cr"
+                paginator="true"
+                rows="10"
+                responsiveLayout="scroll">
+
+            <p:column headerText="ID">
+                #{cr.id}
+            </p:column>
+
+            <p:column headerText="Cuenta">
+                #{cr.cuenta.numero}
+            </p:column>
+
+            <p:column headerText="Socio">
+                #{cr.cuenta.socio.persona.nombre}
+                #{cr.cuenta.socio.persona.apellido}
+            </p:column>
+
+            <p:column headerText="Monto">
+                <h:outputText value="#{cr.monto}">
+                    <f:convertNumber
+                            type="currency"
+                            currencySymbol="$"/>
+                </h:outputText>
+            </p:column>
+
+            <p:column headerText="Interés">
+                #{cr.interes} %
+            </p:column>
+
+            <p:column headerText="Plazo">
+                #{cr.plazo} meses
+            </p:column>
+
+            <p:column headerText="Estado">
+                #{cr.estado}
+            </p:column>
+
+            <p:column headerText="Acciones">
+
+                <p:commandButton
+                        icon="pi pi-pencil"
+                        action="#{creditoBean.editar(cr)}"
+                        update="frmCredito"/>
+
+                <p:commandButton
+                        icon="pi pi-trash"
+                        action="#{creditoBean.eliminar(cr)}"
+                        update="frmCredito">
+
+                    <p:confirm
+                            header="Confirmación"
+                            message="¿Eliminar el crédito?"
+                            icon="pi pi-exclamation-triangle"/>
+
+                </p:commandButton>
+
+            </p:column>
+
+        </p:dataTable>
+
+    </p:panel>
+
+    <p:confirmDialog global="true">
+
+        <p:commandButton
+                value="Sí"
+                type="button"
+                styleClass="ui-confirmdialog-yes"/>
+
+        <p:commandButton
+                value="No"
+                type="button"
+                styleClass="ui-confirmdialog-no ui-button-secondary"/>
+
+    </p:confirmDialog>
+
+</h:form>
+
+</h:body>
+
+</html>
