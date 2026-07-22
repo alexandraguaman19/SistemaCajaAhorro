@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import ec.edu.ups.app.dao.PersonaDao;
 import ec.edu.ups.app.modelo.Persona;
 
 class PersonaTest {
@@ -15,47 +16,48 @@ class PersonaTest {
 
 	        Persona persona = new Persona();
 
-	        persona.setCedula("0106625221");
+	        persona.setCedula("0106524275");
 
-	        persona.setNombres("diego javier");
-	        persona.setApellidos("cabrera vanegas");
-	        persona.setCorreo("diegodjvc@gmail.com");
-	        persona.setUsername("djcv1994");
-	        persona.setPassword("123456");
+	        persona.setNombres("carmen guaman");
+	        persona.setApellidos("guaman yanza");
+	        persona.setCorreo("alexandraguaman@gmail.com");
+	        persona.setUsername("alexg");
+	        persona.setPassword("123");
 
 
 	        assertEquals(
-	                "0106625221",
+	                "0106524275",
 	                persona.getCedula()
 	        );
 
 
 	        assertEquals(
-	                "diego javier",
+	                "carmen alexandra",
 	                persona.getNombres()
 	        );
 
 
 	        assertEquals(
-	                "cabrera vanegas",
+	                "guaman yanza",
 	                persona.getApellidos()
 	        );
 
 
 	        assertEquals(
-	                "diegodjvc@gmail.com",
+	                "alexandraguaman@gmail.com",
 	                persona.getCorreo()
 	        );
 	        assertEquals(
-	                "diegodjv1994",
+	                "alexg",
 	                persona.getCorreo()
 	        );
 
 	        assertEquals(
-	                "123456",
+	                "123",
 	                persona.getPassword()
 	        );
-
+	        PersonaDao personaDao=new PersonaDao();
+	        personaDao.insertar(persona);
 	    }
 
 
